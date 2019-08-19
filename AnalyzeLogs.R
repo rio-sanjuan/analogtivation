@@ -25,17 +25,16 @@ suppressPackageStartupMessages({
 ## load results & clean
 ## =========================================
 
-temp <- list.files("./logs", pattern = "*.json", full.names = TRUE)
-
-data <- dir("./logs", pattern = "*.json") %>% 
-  map_df(~jsonlite::fromJSON(paste0("[",paste0(readLines(file.path("./logs", .)), collapse=","),"]")))
+# temp <- list.files("./logs", pattern = "*.json", full.names = TRUE)
+# data <- dir("./logs", pattern = "*.json") %>% 
+#   map_df(~jsonlite::fromJSON(paste0("[",paste0(readLines(file.path("./logs", .)), collapse=","),"]")))
 
 data <- data.frame(
   val_loss = numeric(),
   loss = numeric(),
   epoch = numeric(),
-  time = character(),
-  group = numeric()
+  time = hms(),
+  group = factor()
 )
 
 for (group in 1:24) {
@@ -46,26 +45,26 @@ for (group in 1:24) {
       val_loss = temp.data$val_loss,
       loss = temp.data$loss,
       epoch = temp.data$epoch,
-      time = temp.data$time,
-      group = group
+      time = temp.data$time %>% hms::as_hms(),
+      group = as.factor(group)
     )
   
   rm(temp.data)
 }
-
 
 ## =========================================
 ## plot results
 ## =========================================
 
 data %>% 
-  dplyr::group_by(group) %>% 
-  dplyr::summarize()
+  dplyr::mutate(hour = hour(time) %% 12, minute = minute(time)) %>% 
+  ggplot(aes(x = epoch, y = loss, color = group)) + theme_bw() + 
+  geom_line()
 
 
 data %>% 
   ggplot(aes(x = epoch, color = as.factor(group))) + 
-  geom_line(aes(y = loss))
+  geom_line(aes(y = loss)) + theme_bw()
 
 
 ## =========================================
