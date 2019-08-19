@@ -63,7 +63,7 @@ data %>%
 
 
 data %>% 
-  ggplot(aes(x = epoch, color = as.factor(group))) + 
+  ggplot(aes(x = epoch, color = group)) + 
   geom_line(aes(y = loss)) + theme_bw()
 
 
