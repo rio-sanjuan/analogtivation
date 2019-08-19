@@ -59,7 +59,12 @@ for (group in 1:24) {
 ## =========================================
 
 data %>% 
-  ggplot(aes(x = time, color = as.factor(group))) + 
+  dplyr::group_by(group) %>% 
+  dplyr::summarize()
+
+
+data %>% 
+  ggplot(aes(x = epoch, color = as.factor(group))) + 
   geom_line(aes(y = loss))
 
 
