@@ -15,7 +15,7 @@ To test this activation, I used a very simple architecture of 1 hidden layer wit
 ## Performance
 
 Below, you can see the loss function over time for several iterations. As you can see, some times are clearly better than others.
-<img src="images/results.png" width=500>
+<p align="center"><img src="images/results.png" width=800></p>
 
 Next, we plot several iterations individually and note activation function at that time.
 <img src="images/1h26m.png" width=500 height=500>
