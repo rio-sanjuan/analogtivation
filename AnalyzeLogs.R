@@ -77,20 +77,24 @@ drawClock <- function(hour, minute) {
   grid.segments(0, -1, 0, 1,
                 default="native", gp=gpar(lex=0.25, col = 'black'))
   
-  # Minute hand
+  # Minute hand (extension)
   minuteAngle <- pi/2 - (minute)/60*2*pi
   grid.segments(0, 0,
                 .8*cos(minuteAngle + pi), .8*sin(minuteAngle + pi),
                 default="native", gp=gpar(lex=1, col = 'gray'))
-  grid.segments(0, 0, 
-                .8*cos(minuteAngle), .8*sin(minuteAngle), 
-                default="native", gp=gpar(lex=1))   
   
-  # Hour hand
+  # Hour hand (extension)
   hourAngle <- pi/2 - (hour + minute/60)/12*2*pi
   grid.segments(0, 0,
                 .6*cos(hourAngle + pi), .6*sin(hourAngle + pi),
                 default="native", gp=gpar(lex=2, col = 'gray'))
+  
+  # Minute hand
+  grid.segments(0, 0, 
+                .8*cos(minuteAngle), .8*sin(minuteAngle), 
+                default="native", gp=gpar(lex=1)) 
+  
+  # Hour hand
   grid.segments(0, 0, 
                 .6*cos(hourAngle), .6*sin(hourAngle), 
                 default="native", gp=gpar(lex=2))
@@ -100,7 +104,7 @@ drawClock <- function(hour, minute) {
               gp=gpar(fill="white"))
 }
 png("images/clock.png")
-drawClock(2, 35)
+drawClock(2, 37)
 dev.off()
 
 ## =========================================
@@ -140,7 +144,7 @@ for (gr in 1:24) {
 ## plot aggregate results
 ## =========================================
 
-png("images/results.png")
+png("images/results.png", width = 720)
 data %>% 
   ggplot(aes(x = epoch, y = loss, color = factor(group))) + 
   geom_line() + theme_bw()
