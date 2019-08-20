@@ -3,7 +3,7 @@ Exploring a silly activation function for neural networks.
 ## Background
 
 <img align="right" src="images/clock.png" width=200 height=200>
-The core idea of this project is to create an activation function based on the hands of a clock. Whenever the activation function is called, a clock is "drawn" based on the current Greenwich Mean Time (GMT). For simplicity, **negative values use the hour hand of the clock** and **positive values use the minute hand of the clock** (Unlike a regular clock, the two hands extend across the full diameter as opposed to only half. I have shown this extension in gray.). In the example to the right, the activation function would behave roughly equivalently to a RELU activation function (the gray lines are relevant here).
+The core idea of this project is to create an activation function based on the hands of a clock. Whenever the activation function is called, a clock is "drawn" based on the current Greenwich Mean Time (GMT). For simplicity, <strong>negative values use the hour hand of the clock</strong> and <strong>positive values use the minute hand of the clock</strong> (Unlike a regular clock, the two hands extend across the full diameter as opposed to only half. I have shown this extension in gray.). In the example to the right, the activation function would behave roughly equivalently to a RELU activation function (the gray lines are relevant here).
 
 ## Testing
 
