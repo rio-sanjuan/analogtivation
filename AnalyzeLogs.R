@@ -99,7 +99,9 @@ drawClock <- function(hour, minute) {
   grid.circle(0, 0, default="native", r=unit(1, "mm"),
               gp=gpar(fill="white"))
 }
+png("images/clock.png")
 drawClock(2, 35)
+dev.off()
 
 ## =========================================
 ## plot results
@@ -133,3 +135,13 @@ for (gr in 1:24) {
   
   dev.off()
 }
+
+## =========================================
+## plot aggregate results
+## =========================================
+
+png("images/results.png")
+data %>% 
+  ggplot(aes(x = epoch, y = loss, color = factor(group))) + 
+  geom_line() + theme_bw()
+dev.off()
