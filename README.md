@@ -5,7 +5,7 @@ Exploring a silly activation function for neural networks.
 
 <img align="right" src="images/clock.png" width=200 height=200>
 The core idea of this project is to create an activation function based on the hands of a clock. Whenever the activation function is called, a clock is "drawn" based on the current Greenwich Mean Time (GMT).
-
+<br>
 For simplicity, negative values use the hour hand of the clock and positive values use the minute hand of the clock (Unlike a regular clock, the two hands extend across the full diameter as opposed to only half. I have shown this extension in gray.).
 
 ## Testing
