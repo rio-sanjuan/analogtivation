@@ -18,6 +18,7 @@ suppressPackageStartupMessages({
   library(hms)
   library(scales)
   library(glue)
+  library(grid)
   library(jsonlite)
 })
 
@@ -53,69 +54,82 @@ for (group in 1:24) {
 }
 
 ## =========================================
-## plot results
+## Draw a clock
 ## =========================================
 
-data %>% 
-  dplyr::mutate(hour = hour(time) %% 12, minute = minute(time)) %>% 
-  ggplot(aes(x = epoch, y = loss, color = group)) + theme_bw() + 
-  geom_line()
-
-
-data %>% 
-  ggplot(aes(x = epoch, color = group)) + 
-  geom_line(aes(y = loss)) + theme_bw()
-
-
-## =========================================
-## plot results
-## =========================================
-
-# Generate digitial clock face
-first.nine <- c('00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12')
-hours <- c(first.nine, as.character(seq(10,23,1)))
-mins <- c(first.nine, as.character(seq(10,59,1)))
-time.chars.l <- lapply(hours, function(h) paste(h, ':', mins, sep=''))
-time.chars <- do.call(c, time.chars.l)
-
-# Generate analog clock face
-hour.pos <- seq(0, 12, 12/(12*60))[1:720]
-min.pos <-seq(0,12, 12/60)[1:60]
-all.hours <- rep(hour.pos, 2)
-all.times <- cbind(all.hours, min.pos, 24)
-for(i in 1:nrow(all.times)) {
+# credit: https://www.stat.auckland.ac.nz/~paul/RG2e/interactive-clock.R
+drawClock <- function(hour, minute) {
+  t <- seq(0, 2*pi, length=13)[-13]
+  x <- cos(t)
+  y <- sin(t)
   
-  png(glue("images/clocks/{time.chars[i]}:00.jpeg"))
+  # grid.newpage()
+  pushViewport(dataViewport(x, y, gp=gpar(lwd=4)))
   
-  cur.time <- data.frame(list(times=c(all.times[i,1], all.times[i,2]), hands=c(.5, 1)))
-  clock <- ggplot(cur.time, aes(xmin=times, xmax=times+0.03, ymin=0, ymax=hands))+
-    geom_rect(aes(alpha=0.8))+
-    scale_x_continuous(limits=c(0,all.hours[length(all.hours)]), breaks=0:11, 
-                       labels=c(12, 1:11))+
-    scale_y_continuous(limits=c(0,1.1))+scale_alpha()+theme_bw()+
-    coord_polar() + labs(title = time.chars[i]) + 
-    theme(axis.text.y=element_blank(), axis.ticks=element_blank(),
-          panel.grid.major=element_blank(),
-          strip.background = element_rect(colour = 'white'),
-          legend.position = "none")
-  # Save images to a folder names 'clocks'
-  dev.off()
-
+  # Circle with ticks
+  grid.circle(x=0, y=0, default="native", 
+              r=grid::unit(1, "native"))
+  grid.segments(x, y, x*.9, y*.9, default="native")
   
-  # ggsave(plot=clock, path = "./images/clocks", filename=paste0(time.chars[i],":00.jpeg"), 
-  #        height=5, width=5, device = "jpeg")
+  # Axis marks
+  grid.segments(-1, 0, 1, 0,
+                default="native", gp=gpar(lex=0.25, col = 'black'))
+  grid.segments(0, -1, 0, 1,
+                default="native", gp=gpar(lex=0.25, col = 'black'))
+  
+  # Minute hand
+  minuteAngle <- pi/2 - (minute)/60*2*pi
+  grid.segments(0, 0,
+                .8*cos(minuteAngle + pi), .8*sin(minuteAngle + pi),
+                default="native", gp=gpar(lex=1, col = 'gray'))
+  grid.segments(0, 0, 
+                .8*cos(minuteAngle), .8*sin(minuteAngle), 
+                default="native", gp=gpar(lex=1))   
+  
+  # Hour hand
+  hourAngle <- pi/2 - (hour + minute/60)/12*2*pi
+  grid.segments(0, 0,
+                .6*cos(hourAngle + pi), .6*sin(hourAngle + pi),
+                default="native", gp=gpar(lex=2, col = 'gray'))
+  grid.segments(0, 0, 
+                .6*cos(hourAngle), .6*sin(hourAngle), 
+                default="native", gp=gpar(lex=2))
+  
+  # Clock
+  grid.circle(0, 0, default="native", r=unit(1, "mm"),
+              gp=gpar(fill="white"))
 }
+drawClock(2, 35)
 
+## =========================================
+## plot results
+## =========================================
 
-current_time = "20:20:22" %>% hms::as_hms()
-
-hour = current_time %>% hour()
-minute = current_time %>% minute()
-second = current_time %>% second()
-
-
-
-
-
-
-
+# minute hand for positive x
+# hour hand for negative x
+for (gr in 1:24) {
+  
+  current.time <- data %>% 
+    dplyr::filter(group == gr) %>% 
+    dplyr::group_by(group) %>% 
+    dplyr::summarize(Hour = mean(hour(time)) %% 12, Minute = mean(minute(time)))
+  
+  png(file = glue("images/{current.time$Hour}h{current.time$Minute}m.png"))
+  
+  # epoch performance
+  g <- data %>% 
+    dplyr::filter(group == gr) %>% 
+    ggplot(aes(x = epoch, y = loss, group = group)) + geom_line() + theme_bw() + 
+    labs(title = glue("Time of Run: {current.time$Hour}:{current.time$Minute}"))
+  print(g)
+  
+  # add clock annotation
+  pushViewport(viewport(x = 0.65, y = 0.6,
+                        width = 0.3, height = 0.3,
+                        just = c("left", "bottom")))
+  grid.draw(rectGrob())
+  grid.draw(drawClock(current.time$Hour, current.time$Minute))
+  popViewport()
+  
+  dev.off()
+}
