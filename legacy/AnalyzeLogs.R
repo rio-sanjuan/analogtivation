@@ -2,7 +2,7 @@
 ##
 ##  Analogtivation ~ Analyze Results
 ## 
-##  author: Ryan Johnson
+##  author: Ryan San Juan
 ##  created: Aug 2019
 ##  
 ###############################################

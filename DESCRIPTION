@@ -1,13 +1,30 @@
 Package: analogtivation
-Title: Wacky Activation Functions
-Version: 0.0.1
+Title: Creative Activation Functions for Deep Learning
+Version: 2.0.0
 Authors@R: 
     person(given = "Ryan",
            family = "Johnson",
            role = c("aut", "cre"),
            email = "rtjohnson1206@gmail.com")
-Description: Collection of bizarre activation functions for neural networks.
+Description: A collection of creative and unconventional activation functions 
+    for neural networks. Originally inspired by analog clocks, this package 
+    provides time-based, physics-inspired, and mathematically quirky activation 
+    functions for deep learning experiments in R.
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.3
+Imports:
+    keras,
+    torch,
+    lubridate
+Suggests:
+    testthat (>= 3.0.0),
+    knitr,
+    rmarkdown,
+    ggplot2
+Config/testthat/edition: 3
+VignetteBuilder: knitr
+URL: https://github.com/rtjohnson12/analogtivation
+BugReports: https://github.com/rtjohnson12/analogtivation/issues
