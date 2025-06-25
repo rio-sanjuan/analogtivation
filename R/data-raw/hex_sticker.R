@@ -6,14 +6,14 @@ p <-
 
 ggplot2::ggsave("man/figures/base.png")
 hexSticker::sticker(
-  "man/figures/base.png"
-  , package=""
-  , h_fill="#FFF"
-  , h_color="#424242"
-  , s_x=1
-  , s_y=1
-  , s_width=0.9
-  , s_height=0.6
-  , filename="man/figures/analogtivation.png"
-  , white_around_sticker = TRUE
+  "man/figures/base.png",
+  package = "",
+  h_fill = "#FFF",
+  h_color = "#424242",
+  s_x = 1,
+  s_y = 1,
+  s_width = 0.9,
+  s_height = 0.6,
+  filename = "man/figures/analogtivation.png",
+  white_around_sticker = TRUE
 )

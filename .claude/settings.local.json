@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir:*)",
+      "Bash(mv:*)",
+      "Bash(find:*)",
+      "Bash(ls:*)",
+      "Bash(python3:*)",
+      "Bash(git add:*)",
+      "Bash(git restore:*)",
+      "Bash(/Users/rtjohnson1206/Library/Python/3.12/bin/black python/)",
+      "Bash(R:*)"
+    ],
+    "deny": []
+  }
+}

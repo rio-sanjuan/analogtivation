@@ -4,16 +4,16 @@ __version__ = "2.0.0"
 __author__ = "Ryan Johnson"
 __email__ = "rtjohnson1206@gmail.com"
 
+# Re-export base classes for extensibility
+from .base import ActivationFunction, AdaptiveActivation, TimeBasedActivation
+
 # Import all activation functions
 from .core import *
-
-# Re-export base classes for extensibility
-from .base import ActivationFunction, TimeBasedActivation, AdaptiveActivation
 
 __all__ = [
     # Base classes
     "ActivationFunction",
-    "TimeBasedActivation", 
+    "TimeBasedActivation",
     "AdaptiveActivation",
     # Time-based activations
     "clock_activation",
