@@ -1,4 +1,27 @@
-"""Wave-based activation functions."""
+"""Wave-based activation functions.
+
+This module provides activation functions based on wave physics and
+signal processing concepts. These functions create complex, periodic
+transformations useful for:
+
+- Modeling periodic or oscillatory phenomena
+- Feature extraction at multiple scales
+- Creating learnable frequency-domain representations
+- Signal processing and spectral analysis tasks
+
+The wave-based activations can capture multi-scale patterns and
+harmonic relationships in data.
+
+Examples
+--------
+>>> import numpy as np
+>>> from analogtivation.core import wave_activation, fourier_activation
+>>> x = np.linspace(-2*np.pi, 2*np.pi, 100)
+>>> # Single frequency wave
+>>> y1 = wave_activation(x, frequencies=[1.0], amplitudes=[1.0])
+>>> # Multi-frequency composite
+>>> y2 = wave_activation(x, frequencies=[1, 2, 3], amplitudes=[1, 0.5, 0.25])
+"""
 
 from typing import Union
 
@@ -11,7 +34,19 @@ class WaveActivation(ActivationFunction):
     """
     Composite waveform activation function.
 
-    Combines multiple sinusoidal waves with different frequencies.
+    Combines multiple sinusoidal waves with different frequencies and
+    amplitudes to create complex periodic patterns. This activation can
+    learn to represent multi-scale features and harmonic relationships.
+
+    The output is a weighted sum of sine waves:
+    f(x) = sum(A_i * sin(2π * f_i * x)) for each frequency f_i and amplitude A_i
+
+    Attributes
+    ----------
+    frequencies : np.ndarray
+        Array of frequency values for component waves
+    amplitudes : np.ndarray
+        Array of amplitude values for component waves
     """
 
     def __init__(
@@ -22,17 +57,46 @@ class WaveActivation(ActivationFunction):
 
         Parameters
         ----------
-        frequencies : list
-            List of frequencies for component waves
-        amplitudes : list
-            List of amplitudes for component waves
+        frequencies : list, optional
+            List of frequencies for component waves. Higher frequencies
+            capture finer details. Default is [1.0, 2.0, 3.0].
+        amplitudes : list, optional
+            List of amplitudes for component waves. Should have same
+            length as frequencies. Default is [1.0, 0.5, 0.25].
+
+        Raises
+        ------
+        ValueError
+            If frequencies and amplitudes have different lengths
+
+        Examples
+        --------
+        >>> # Simple single-frequency wave
+        >>> act1 = WaveActivation(frequencies=[1.0], amplitudes=[1.0])
+        >>> # Harmonic series with decaying amplitudes
+        >>> act2 = WaveActivation(
+        ...     frequencies=[1, 2, 3, 4],
+        ...     amplitudes=[1, 0.5, 0.33, 0.25]
+        ... )
         """
         super().__init__("wave", frequencies=frequencies, amplitudes=amplitudes)
         self.frequencies = np.array(frequencies)
         self.amplitudes = np.array(amplitudes)
 
     def forward(self, x: Union[np.ndarray, float]) -> Union[np.ndarray, float]:
-        """Apply composite wave activation."""
+        """Apply composite wave activation.
+
+        Parameters
+        ----------
+        x : array_like
+            Input values
+
+        Returns
+        -------
+        array_like
+            Sum of sinusoidal components with specified frequencies
+            and amplitudes
+        """
         x_array = np.asarray(x)
         result = np.zeros_like(x_array, dtype=np.float64)
 
@@ -42,7 +106,21 @@ class WaveActivation(ActivationFunction):
         return result if isinstance(x, np.ndarray) else float(result)
 
     def gradient(self, x: Union[np.ndarray, float]) -> Union[np.ndarray, float]:
-        """Compute gradient of wave activation."""
+        """Compute gradient of wave activation.
+
+        The gradient is the sum of cosine terms:
+        f'(x) = sum(A_i * 2π * f_i * cos(2π * f_i * x))
+
+        Parameters
+        ----------
+        x : array_like
+            Input values
+
+        Returns
+        -------
+        array_like
+            Gradient values with same shape as input
+        """
         x_array = np.asarray(x)
         grad = np.zeros_like(x_array, dtype=np.float64)
 

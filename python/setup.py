@@ -1,51 +1,86 @@
 """Setup configuration for analogtivation Python package."""
 
+from pathlib import Path
+
 from setuptools import find_packages, setup
 
-with open("../README.md", "r", encoding="utf-8") as fh:
-    long_description = fh.read()
+# Read the README file
+here = Path(__file__).parent.absolute()
+readme_path = here.parent / "README.md"
+long_description = readme_path.read_text(encoding="utf-8")
+
+# Read version from __init__.py
+version = "2.0.0"  # This should be kept in sync with __init__.py
 
 setup(
     name="analogtivation",
-    version="2.0.0",
+    version=version,
     author="Ryan San Juan",
     author_email="riosanjuan314@gmail.com",
-    description="Creative activation functions for deep learning",
+    description="Creative activation functions for deep learning inspired by "
+    "real-world phenomena",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/rtjohnson12/analogtivation",
-    packages=find_packages(),
+    url="https://github.com/rio-sanjuan/analogtivation",
+    project_urls={
+        "Bug Tracker": "https://github.com/rio-sanjuan/analogtivation/issues",
+        "Documentation": "https://analogtivation.readthedocs.io",
+        "Source Code": "https://github.com/rio-sanjuan/analogtivation",
+    },
+    packages=find_packages(exclude=["tests", "tests.*", "benchmarks", "benchmarks.*"]),
     classifiers=[
         "Development Status :: 4 - Beta",
+        "Intended Audience :: Developers",
         "Intended Audience :: Science/Research",
         "Topic :: Scientific/Engineering :: Artificial Intelligence",
+        "Topic :: Scientific/Engineering :: Mathematics",
         "License :: OSI Approved :: MIT License",
+        "Operating System :: OS Independent",
         "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
+        "Topic :: Software Development :: Libraries :: Python Modules",
     ],
-    python_requires=">=3.9",
+    python_requires=">=3.8",
     install_requires=[
-        "numpy>=1.24.0,<3.0",
+        "numpy>=1.19.0",
     ],
     extras_require={
-        "tensorflow": ["tensorflow>=2.15.0,<3.0"],
-        "torch": ["torch>=2.0.0,<3.0"],
-        "jax": ["jax>=0.4.0,<1.0", "jaxlib>=0.4.0,<1.0"],
+        "tensorflow": ["tensorflow>=2.6.0"],
+        "torch": ["torch>=1.9.0"],
+        "jax": ["jax>=0.3.0", "jaxlib>=0.3.0"],
+        "all": ["tensorflow>=2.6.0", "torch>=1.9.0", "jax>=0.3.0", "jaxlib>=0.3.0"],
         "dev": [
-            "pytest>=6.0",
-            "pytest-cov>=2.0",
-            "black>=21.0",
-            "mypy>=0.910",
-            "flake8>=3.9",
-            "isort>=5.9",
+            "pytest>=7.0.0",
+            "pytest-cov>=4.0.0",
+            "pytest-benchmark>=4.0.0",
+            "hypothesis>=6.0.0",
+            "black>=23.0.0",
+            "isort>=5.12.0",
+            "flake8>=6.0.0",
+            "mypy>=1.0.0",
+            "pre-commit>=3.0.0",
         ],
         "docs": [
-            "sphinx>=4.0",
-            "sphinx-rtd-theme>=0.5",
-            "nbsphinx>=0.8",
+            "sphinx>=5.0.0",
+            "sphinx-rtd-theme>=1.2.0",
+            "sphinx-autodoc-typehints>=1.22.0",
+            "nbsphinx>=0.9.0",
+            "sphinx-copybutton>=0.5.0",
         ],
     },
+    keywords=[
+        "deep learning",
+        "activation functions",
+        "neural networks",
+        "machine learning",
+        "tensorflow",
+        "pytorch",
+        "jax",
+    ],
+    include_package_data=True,
+    zip_safe=False,
 )

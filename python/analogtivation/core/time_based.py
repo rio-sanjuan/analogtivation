@@ -1,4 +1,21 @@
-"""Time-based activation functions."""
+"""Time-based activation functions.
+
+This module contains activation functions that incorporate temporal dynamics,
+allowing neural networks to exhibit time-dependent behavior. These functions
+are useful for:
+
+- Modeling systems with inherent time dependencies
+- Creating adaptive networks that change behavior over time
+- Incorporating real-world temporal patterns (daily, seasonal cycles)
+- Time series analysis and prediction
+
+Examples
+--------
+>>> import numpy as np
+>>> from analogtivation.core import clock_activation
+>>> x = np.array([1.0, -0.5, 2.0])
+>>> y = clock_activation(x)  # Output varies with current time
+"""
 
 from math import radians, tan
 from time import gmtime, strftime
@@ -10,7 +27,31 @@ from ..base import TimeBasedActivation
 
 
 def to_clock_angle(theta: float) -> float:
-    """Convert angle to clock notation (12 o'clock = 90 degrees)."""
+    """Convert angle to clock notation.
+
+    Transforms standard mathematical angles to clock notation where:
+    - 12 o'clock = 90 degrees (top)
+    - 3 o'clock = 0 degrees (right)
+    - 6 o'clock = -90 degrees (bottom)
+    - 9 o'clock = 180 degrees (left)
+
+    Parameters
+    ----------
+    theta : float
+        Angle in degrees (standard mathematical notation)
+
+    Returns
+    -------
+    float
+        Angle in clock notation
+
+    Examples
+    --------
+    >>> to_clock_angle(0)  # 3 o'clock position
+    90.0
+    >>> to_clock_angle(90)  # 12 o'clock position
+    0.0
+    """
     return -1 * (theta - 90)
 
 
@@ -18,17 +59,48 @@ def clock_activation(x: Union[np.ndarray, float]) -> Union[np.ndarray, float]:
     """
     Clock activation function that changes behavior based on current time.
 
-    Uses minute hand angle for positive inputs and hour hand angle for negative inputs.
+    This activation function modulates inputs based on the current positions
+    of clock hands, creating a time-dependent transformation. It uses:
+    - Minute hand angle for positive inputs
+    - Hour hand angle for negative inputs
+
+    The function applies the tangent of clock hand angles as slopes,
+    creating periodic variations in the activation strength throughout
+    the day.
 
     Parameters
     ----------
     x : array_like
-        Input values
+        Input values. Can be a scalar or array of any shape.
 
     Returns
     -------
     array_like
-        Activated values based on current clock time
+        Activated values with same shape as input. The transformation
+        depends on the current system time.
+
+    Notes
+    -----
+    The activation exhibits discontinuities when clock hands point
+    straight up or down (tangent approaches infinity). These are
+    handled by clamping to reasonable bounds.
+
+    The function is deterministic for a given time but changes
+    continuously as time progresses.
+
+    Examples
+    --------
+    >>> import numpy as np
+    >>> x = np.array([1.0, -0.5, 2.0, -1.5])
+    >>> y = clock_activation(x)
+    >>> # Output varies based on current time
+    >>> # At 3:15 PM, might return something like:
+    >>> # array([1.73, -0.29, 3.46, -0.87])
+
+    See Also
+    --------
+    seasonal_activation : For longer-term temporal patterns
+    circadian_activation : For biological rhythm modeling
     """
     current_time = gmtime()
 
@@ -61,17 +133,46 @@ def seasonal_activation(
     """
     Activation function that varies with seasons.
 
+    Modulates input values based on the day of year, creating seasonal
+    patterns that peak in summer and trough in winter. This is useful
+    for modeling:
+
+    - Seasonal business patterns
+    - Agricultural or weather-dependent systems
+    - Biological processes with annual cycles
+    - Energy consumption patterns
+
     Parameters
     ----------
     x : array_like
-        Input values
+        Input values to be seasonally modulated
     hemisphere : str, optional
-        Either "northern" or "southern" hemisphere
+        Either "northern" or "southern" hemisphere. Determines whether
+        summer occurs mid-year (northern) or year-end (southern).
+        Default is "northern".
 
     Returns
     -------
     array_like
-        Seasonally adjusted activation
+        Seasonally adjusted activation with same shape as input.
+        Values are modulated by ±30% based on season.
+
+    Notes
+    -----
+    The seasonal factor follows a sinusoidal pattern:
+    - Maximum (summer): ~June 21 (northern) or ~December 21 (southern)
+    - Minimum (winter): ~December 21 (northern) or ~June 21 (southern)
+    - Neutral (spring/fall): ~March 21 and ~September 21
+
+    Examples
+    --------
+    >>> x = np.array([1.0, 2.0, 3.0])
+    >>> # In summer (northern hemisphere):
+    >>> seasonal_activation(x, "northern")
+    array([1.3, 2.6, 3.9])  # 30% increase
+    >>> # In winter:
+    >>> seasonal_activation(x, "northern")
+    array([0.7, 1.4, 2.1])  # 30% decrease
     """
     current_time = gmtime()
     day_of_year = int(strftime("%j", current_time))
@@ -93,6 +194,11 @@ def seasonal_activation(
 def circadian_activation(x: Union[np.ndarray, float]) -> Union[np.ndarray, float]:
     """
     24-hour circadian rhythm activation function.
+
+    Models biological circadian rhythms that regulate sleep-wake cycles,
+    hormone production, and other physiological processes. The activation
+    strength varies throughout the day following typical human alertness
+    patterns.
 
     Parameters
     ----------

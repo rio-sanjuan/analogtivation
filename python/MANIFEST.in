@@ -1,0 +1,15 @@
+include README.md
+include LICENSE
+include requirements*.txt
+include tox.ini
+include .coveragerc
+
+recursive-exclude tests *
+recursive-exclude benchmarks *
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]
+recursive-exclude * .DS_Store
+
+global-exclude *.so
+global-exclude *.dylib
+global-exclude *.dll
