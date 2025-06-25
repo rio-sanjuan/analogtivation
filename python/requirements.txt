@@ -1,0 +1,19 @@
+# Core dependencies
+numpy>=1.24.0,<3.0
+
+# Optional framework dependencies
+# Uncomment the framework you want to use:
+
+# TensorFlow
+# tensorflow>=2.15.0,<3.0
+
+# PyTorch
+# torch>=2.0.0,<3.0
+
+# JAX
+# jax>=0.4.0,<1.0
+# jaxlib>=0.4.0,<1.0
+
+# Development dependencies
+# Install with: pip install -r requirements-dev.txt
+# See requirements-dev.txt for development tools
