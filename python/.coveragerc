@@ -1,0 +1,58 @@
+[run]
+source = analogtivation
+branch = True
+parallel = True
+omit =
+    */tests/*
+    */benchmarks/*
+    */setup.py
+    */__init__.py
+    */docs/*
+    */examples/*
+    */.venv/*
+    */venv/*
+
+[report]
+precision = 2
+show_missing = True
+skip_covered = False
+sort = Cover
+
+exclude_lines =
+    # Standard pragma
+    pragma: no cover
+
+    # Debug-only code
+    def __repr__
+    if self\.debug
+
+    # Defensive assertion code
+    raise AssertionError
+    raise NotImplementedError
+
+    # Non-runnable code
+    if 0:
+    if __name__ == .__main__.:
+
+    # Abstract methods
+    @abstract
+    @abc.abstractmethod
+
+    # Type checking
+    if TYPE_CHECKING:
+
+    # Deprecation warnings
+    warnings.warn
+
+ignore_errors = True
+
+[html]
+directory = htmlcov
+title = analogtivation Coverage Report
+
+[xml]
+output = coverage.xml
+
+[json]
+output = coverage.json
+pretty_print = True
