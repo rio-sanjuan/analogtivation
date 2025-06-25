@@ -1,7 +1,7 @@
 # analogtivation <img src="man/figures/analogtivation.png" align="right" width="120" height="139"/>
 
 [![](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
-[![](https://img.shields.io/badge/devel%20version-2.0.0-blue.svg)](https://github.com/rtjohnson12/analogtivation)
+[![](https://img.shields.io/badge/devel%20version-2.0.0-blue.svg)](https://github.com/rio-sanjuan/analogtivation)
 [![Python](https://img.shields.io/badge/Python-3.7%2B-blue)](https://www.python.org/)
 [![R](https://img.shields.io/badge/R-4.0%2B-blue)](https://www.r-project.org/)
 
@@ -41,7 +41,7 @@ pip install analogtivation
 install.packages("analogtivation")
 
 # Development version from GitHub
-devtools::install_github("rtjohnson12/analogtivation")
+devtools::install_github("rio-sanjuan/analogtivation")
 ```
 
 ## Quick Start
@@ -68,7 +68,7 @@ class ClockNet(torch.nn.Module):
         self.fc1 = torch.nn.Linear(784, 64)
         self.clock = atv_torch.ClockActivation()
         self.fc2 = torch.nn.Linear(64, 10)
-    
+
     def forward(self, x):
         x = self.clock(self.fc1(x))
         return self.fc2(x)

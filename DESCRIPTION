@@ -1,14 +1,14 @@
 Package: analogtivation
 Title: Creative Activation Functions for Deep Learning
 Version: 2.0.0
-Authors@R: 
+Authors@R:
     person(given = "Ryan",
-           family = "Johnson",
+           family = "San Juan",
            role = c("aut", "cre"),
-           email = "rtjohnson1206@gmail.com")
-Description: A collection of creative and unconventional activation functions 
-    for neural networks. Originally inspired by analog clocks, this package 
-    provides time-based, physics-inspired, and mathematically quirky activation 
+           email = "riosanjuan314@gmail.com")
+Description: A collection of creative and unconventional activation functions
+    for neural networks. Originally inspired by analog clocks, this package
+    provides time-based, physics-inspired, and mathematically quirky activation
     functions for deep learning experiments in R.
 License: MIT + file LICENSE
 Encoding: UTF-8
@@ -26,5 +26,5 @@ Suggests:
     ggplot2
 Config/testthat/edition: 3
 VignetteBuilder: knitr
-URL: https://github.com/rtjohnson12/analogtivation
-BugReports: https://github.com/rtjohnson12/analogtivation/issues
+URL: https://github.com/rio-sanjuan/analogtivation
+BugReports: https://github.com/rio-sanjuan/analogtivation/issues

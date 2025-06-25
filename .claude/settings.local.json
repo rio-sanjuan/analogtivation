@@ -8,8 +8,8 @@
       "Bash(python3:*)",
       "Bash(git add:*)",
       "Bash(git restore:*)",
-      "Bash(/Users/rtjohnson1206/Library/Python/3.12/bin/black python/)",
-      "Bash(R:*)"
+      "Bash(R:*)",
+      "Bash(python -m pytest tests/test_core_time_based.py::TestClockActivation::test_clock_activation_noon -v)"
     ],
     "deny": []
   }

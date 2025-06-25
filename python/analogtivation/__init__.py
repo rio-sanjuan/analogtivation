@@ -2,13 +2,32 @@
 
 __version__ = "2.0.0"
 __author__ = "Ryan Johnson"
-__email__ = "rtjohnson1206@gmail.com"
+__email__ = "riosanjuan314@gmail.com"
 
 # Re-export base classes for extensibility
 from .base import ActivationFunction, AdaptiveActivation, TimeBasedActivation
 
 # Import all activation functions
-from .core import *
+from .core import (  # Time-based; Wave-based; Chaos-based
+    CircadianActivation,
+    ClockActivation,
+    FourierActivation,
+    LogisticMapActivation,
+    LorenzActivation,
+    MandelbrotActivation,
+    QuantumActivation,
+    SeasonalActivation,
+    WaveActivation,
+    circadian_activation,
+    clock_activation,
+    fourier_activation,
+    logistic_map_activation,
+    lorenz_activation,
+    mandelbrot_activation,
+    quantum_activation,
+    seasonal_activation,
+    wave_activation,
+)
 
 __all__ = [
     # Base classes

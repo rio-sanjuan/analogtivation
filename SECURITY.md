@@ -21,7 +21,7 @@ We actively support the following versions with security updates:
 
 ## Reporting a Vulnerability
 
-If you discover a security vulnerability within analogtivation, please send an email to rtjohnson1206@gmail.com. All security vulnerabilities will be promptly addressed.
+If you discover a security vulnerability within analogtivation, please send an email to riosanjuan314@gmail.com. All security vulnerabilities will be promptly addressed.
 
 Please include the following information:
 - Type of issue (e.g., buffer overflow, SQL injection, cross-site scripting, etc.)
